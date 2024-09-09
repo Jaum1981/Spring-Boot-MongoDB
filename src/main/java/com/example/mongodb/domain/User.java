@@ -1,6 +1,8 @@
 package com.example.mongodb.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
@@ -9,12 +11,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "User")
 public class User implements Serializable{
 	
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	private String id;
 	private String name;
 	private String email;
+
+	private List<Post> posts;
 	
 	public User() {
 	}
