@@ -22,7 +22,7 @@ public class UserResource {
 
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll() {
-		List<User> listUsers = userService.findAll();
+		List<User> listUsers = userService.findAllUsers();
 		//Conversão de listUsers para listUsersDTO ------- Expressão lambda ---- caminho de volta(stream para lista)
 		List<UserDTO> listUsersDTO = listUsers.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listUsersDTO);
@@ -30,7 +30,7 @@ public class UserResource {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
-		User user = userService.findById(id);
+		User user = userService.findUserById(id);
 		return ResponseEntity.ok().body(new UserDTO(user));
 	}
 
@@ -47,6 +47,15 @@ public class UserResource {
 	public ResponseEntity<Void> deleteUserById(@PathVariable String id){
 		userService.deleteUserById(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTOObj, @PathVariable String id) {
+		User userObj = userService.fromDTO(userDTOObj);
+		userObj.setId(id); //garantir que o id do objeto seja o mesmo da requisição
+		userObj = userService.updateUser(userObj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userObj.getId()).toUri();
+		return  ResponseEntity.noContent().build();
 	}
 
 }

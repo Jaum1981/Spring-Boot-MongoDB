@@ -16,16 +16,19 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-	public List<User> findAll() {
+
+	//metodo que retorna todos os usuários em formato de lista
+	public List<User> findAllUsers() {
 		return userRepository.findAll();
 	}
-	
-	public User findById(String id) {
+
+	//metodo que retorna um usuário pelo id
+	public User findUserById(String id) {
 	    Optional<User> user = userRepository.findById(id);
 	    return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
 
+	//metodo que insere um novo usuário passando um obj do tipo User
 	public User insertUser(User userObj) {
 		return userRepository.insert(userObj);
 	}
@@ -35,8 +38,20 @@ public class UserService {
 		return new User(userDTOObj.getId(), userDTOObj.getName(), userDTOObj.getEmail());
 	}
 
+	// metodo para deletar um usuário existente através do seu id
 	public void deleteUserById(String id) {
-		findById(id);
+		findUserById(id);
 		userRepository.deleteById(id);
+	}
+
+	private void updateData(User newUser, User userObj){
+		newUser.setName(userObj.getName());
+		newUser.setEmail(userObj.getEmail());
+	}
+
+	public User updateUser(User userObj) {
+		User newUserObj = findUserById(userObj.getId());
+		updateData(newUserObj, userObj);
+		return userRepository.save(newUserObj);
 	}
 }
