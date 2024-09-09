@@ -23,9 +23,10 @@ public class UserResource {
 
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll() {
-		List<User> list = userService.findAll();
-		List<UserDTO> listDTO = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList()); // comversao de User para UserDTO
-		return ResponseEntity.ok().body(listDTO);
+		List<User> listUsers = userService.findAll();
+		//Conversão de listUsers para listUsersDTO ------- Expressão lambda ---- caminho de volta(stream para lista)
+		List<UserDTO> listUsersDTO = listUsers.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listUsersDTO);
 	}
 
 	@GetMapping("/{id}")

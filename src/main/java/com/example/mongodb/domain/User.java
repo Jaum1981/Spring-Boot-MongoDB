@@ -44,10 +44,12 @@ public class User implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
