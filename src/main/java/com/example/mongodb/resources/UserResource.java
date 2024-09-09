@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.mongodb.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,13 @@ public class UserResource {
 		userObj = userService.updateUser(userObj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userObj.getId()).toUri();
 		return  ResponseEntity.noContent().build();
+	}
+
+	// retorna os post de determinado usuário
+	@GetMapping("/{id}/posts")
+	public ResponseEntity<List<Post>> findUserPosts(@PathVariable String id){
+		User userObj = userService.findUserById(id);
+		return ResponseEntity.ok().body(userObj.getPosts());
 	}
 
 }

@@ -44,11 +44,13 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 
+	// metodo auxiliar para atualizar os dados de um usuário
 	private void updateData(User newUser, User userObj){
 		newUser.setName(userObj.getName());
 		newUser.setEmail(userObj.getEmail());
 	}
 
+	// metodo para atualizar os dados de um usuário
 	public User updateUser(User userObj) {
 		User newUserObj = findUserById(userObj.getId());
 		updateData(newUserObj, userObj);
