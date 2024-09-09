@@ -49,7 +49,14 @@ public class Instantiation implements CommandLineRunner{
 
 		//salva posts log após instanciar
 		postRepository.saveAll(Arrays.asList(post1, post2, post3, post4));
-		
+
+		maria.getPosts().addAll(Arrays.asList(post1, post2));
+		joao.getPosts().addAll(Arrays.asList(post3));
+		bob.getPosts().addAll(Arrays.asList(post4));
+
+		//salva novamente, mas agora com os posts referenciados
+		userRepository.saveAll(Arrays.asList(maria, joao, bob));
+
 	}
 
 }
