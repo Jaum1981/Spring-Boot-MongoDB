@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,18 @@ public class PostResource {
     public ResponseEntity<List<Post>> findPostByTitle(@RequestParam(value = "text", defaultValue = "") String text ) { //para o endpoint identificar o nome do parametro(text)
         text = URL.decodeParam(text);
         List<Post> listPost = postService.findPostByTitle(text);
+        return ResponseEntity.ok().body(listPost);
+    }
+
+    @GetMapping(value = "/fullsearch")
+    public ResponseEntity<List<Post>> fullSearchPostByStringAnywhere(@RequestParam(value = "text", defaultValue = "") String text,
+                                                                     @RequestParam(value = "minDate", defaultValue = "") String minDate,
+                                                                     @RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+        text = URL.decodeParam(text);
+        //utilizar um auxiliar pois no parametro é passado uma string
+        Date minDateAux = URL.convertDate(minDate, new Date(0L));
+        Date maxDateAux = URL.convertDate(maxDate, new Date(0L));
+        List<Post> listPost = postService.fullPostSearchByStringAnywhere(text, minDateAux, maxDateAux);
         return ResponseEntity.ok().body(listPost);
     }
 

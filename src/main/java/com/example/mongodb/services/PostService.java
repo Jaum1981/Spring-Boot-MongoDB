@@ -6,6 +6,7 @@ import com.example.mongodb.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 
@@ -23,6 +24,12 @@ public class PostService {
 
     public List<Post> findPostByTitle(String text) {
         return postRepository.findPostByTitle(text);
+    }
+
+    public List<Post> fullPostSearchByStringAnywhere(String text, Date minDate, Date maxDate) {
+        //macete para ajustar o maxDate, pois ele é setado 00:00 do dia atual
+        maxDate = new Date(maxDate.getTime() + 24*60*60*1000); //compilador chora com essas multiplicaçôes kjkkkkk
+        return  postRepository.fullPostSearchByStringAnywhere(text, minDate, maxDate);
     }
 
 }
